@@ -1,13 +1,14 @@
 package br.com.alura.adopet.api.service;
 
+import br.com.alura.adopet.api.dto.AprovacaoAdocaoDto;
+import br.com.alura.adopet.api.dto.ReprovacaoAdocaoDto;
+import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
 import br.com.alura.adopet.api.model.Adocao;
 import br.com.alura.adopet.api.model.StatusAdocao;
 import br.com.alura.adopet.api.repository.AdocaoRepository;
+import jakarta.validation.Valid;
 import jakarta.validation.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +22,7 @@ public class AdocaoService {
     @Autowired
     private EmailService emailService;
 
-    public void solicitar(Adocao adocao){
+    public void solicitar(@Valid SolicitacaoAdocaoDto adocao){
         if (adocao.getPet().getAdotado() == true) {
             throw new ValidationException("Pet já foi adotado!");
         } else {
@@ -54,7 +55,7 @@ public class AdocaoService {
 
     }
 
-    public void aprovar(Adocao adocao) {
+    public void aprovar(@Valid AprovacaoAdocaoDto adocao) {
         adocao.setStatus(StatusAdocao.APROVADO);
         repository.save(adocao);
 
@@ -64,7 +65,7 @@ public class AdocaoService {
                 "Parabéns " +adocao.getTutor().getNome() +"!\n\nSua adoção do pet " +adocao.getPet().getNome() +", solicitada em " +adocao.getData().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")) +", foi aprovada.\nFavor entrar em contato com o abrigo " +adocao.getPet().getAbrigo().getNome() +" para agendar a busca do seu pet.");
     }
 
-    public void reprovar(Adocao adocao) {
+    public void reprovar(@Valid ReprovacaoAdocaoDto adocao) {
         adocao.setStatus(StatusAdocao.REPROVADO);
         repository.save(adocao);
 
