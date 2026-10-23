@@ -1,0 +1,1 @@
+aplicar o padrão Strategy para separar as validações das regras de negócio e o padrão Chain of Responsibility para executar essas validações automaticamente. Essa organização ajuda a manter o código mais flexível, pois permite isolar as validações em vez de concentrá-las em um único fluxo.

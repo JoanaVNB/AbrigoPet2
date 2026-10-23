@@ -15,7 +15,8 @@ public class Adocao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+   //só precisa da @column se quiser mudar o nome do atributo
+    // @Column(name = "id") já esta configurado abaixo. Podemos cortar por ser redudante.
     private Long id;
 
     @Column(name = "data")
@@ -23,14 +24,15 @@ public class Adocao {
 
     //@NotNull
     @ManyToOne
-    @JsonBackReference("tutor_adocoes")
+   // @JsonBackReference("tutor_adocoes") nao é mais necessário pq os controllers
+    // nao usam mais as entidades,e sim od DTOs
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
    // @NotNull
     @OneToOne
     @JoinColumn(name = "pet_id")
-    @JsonManagedReference("adocao_pets")
+   // @JsonManagedReference("adocao_pets")
     private Pet pet;
 
     //@NotBlank
@@ -38,10 +40,10 @@ public class Adocao {
     private String motivo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
+    //@Column(name = "status")
     private StatusAdocao status;
 
-    @Column(name = "justificativa_status")
+   // @Column(name = "justificativa_status")
     private String justificativaStatus;
 
     @Override
