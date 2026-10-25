@@ -53,6 +53,16 @@ public class Pet {
     @JsonBackReference("adocao_pets")
     private Adocao adocao;
 
+    public Pet() {
+    }
+
+    public Pet(Boolean adotado, Abrigo abrigo) {
+        this.adotado = adotado;
+        this.abrigo = abrigo;
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

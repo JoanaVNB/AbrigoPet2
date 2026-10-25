@@ -23,15 +23,15 @@ public class Adocao {
     private LocalDateTime data;
 
     //@NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
    // @JsonBackReference("tutor_adocoes") nao é mais necessário pq os controllers
     // nao usam mais as entidades,e sim od DTOs
-    @JoinColumn(name = "tutor_id")
+    //@JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
    // @NotNull
-    @OneToOne
-    @JoinColumn(name = "pet_id")
+    @OneToOne(fetch = FetchType.LAZY)
+    //@JoinColumn(name = "pet_id")
    // @JsonManagedReference("adocao_pets")
     private Pet pet;
 
@@ -45,6 +45,18 @@ public class Adocao {
 
    // @Column(name = "justificativa_status")
     private String justificativaStatus;
+
+    public Adocao(Tutor tutor, Pet pet, String motivo) {
+        this.tutor = tutor;
+        this.pet = pet;
+        this.motivo = motivo;
+        this.status = StatusAdocao.AGUARDANDO_AVALIACAO;
+        this.data = LocalDateTime.now();
+    }
+
+    //é necessário ter o construtor genérico como obrigação do JPA
+    public Adocao(){
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -113,5 +125,14 @@ public class Adocao {
 
     public void setJustificativaStatus(String justificativaStatus) {
         this.justificativaStatus = justificativaStatus;
+    }
+
+    public void marcarAprovacao() {
+        this.status = StatusAdocao.APROVADO;
+    }
+
+    public void marcarRecusa(@NotBlank String justificativa) {
+        this.status = StatusAdocao.REPROVADO;
+        this.justificativaStatus = justificativa;
     }
 }

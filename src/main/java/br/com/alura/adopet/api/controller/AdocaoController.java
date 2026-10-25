@@ -24,7 +24,7 @@ public class AdocaoController {
     private AdocaoRepository repository;
 
     @Autowired
-    private JavaMailSender emailSender;
+    private JavaMailSender emailSender;a
 
     @PostMapping
     @Transactional

@@ -22,14 +22,20 @@ public class ValidacaoPetComAdocaoEmAndamento implements ValidacaoSolicitacaoAdo
     private PetRepository petRepository;
 
     public void validar(SolicitacaoAdocaoDto dto) {
-        List<Adocao> adocoes = repository.findAll();
-        Pet pet = petRepository.getReferenceById(dto.idPet());
-        for (Adocao a : adocoes) {
-            if (a.getPet() == pet && a.getStatus() == StatusAdocao.AGUARDANDO_AVALIACAO) {
-                throw new ValidationException("Pet já está aguardando avaliação para ser adotado!");
+//        List<Adocao> adocoes = repository.findAll(); //carrega adocoes e joga numa lista
+//        //nao é uma boa pratica pois é ruim para a performace carregar todas as adocoes para a memoria
+//        Pet pet = petRepository.getReferenceById(dto.idPet()); //carrego o pet que esta sendo feita a solicitacao de adoca
+//        for (Adocao a : adocoes) {//percorro a lista de adocao para verificar se este ped esta na lista de aguardando avaliacao
+//            if (a.getPet() == pet && a.getStatus() == StatusAdocao.AGUARDANDO_AVALIACAO) {
+//                throw new ValidationException("Pet já está aguardando avaliação para ser adotado!");
+//
+//            }
+//        }
 
-            }
+        boolean petTemAdocaoEmAndamento = repository.existsByPetAndStatus(dto.idPet(), StatusAdocao.AGUARDANDO_AVALIACAO);
+
+        if (petTemAdocaoEmAndamento) {
+            throw new ValidationException("Pet já está aguardando avaliação para ser adotado!");
         }
-
     }
 }
